@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nevora Host | Performance Xeon® de Elite</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #2293b8;
+            --primary-glow: rgba(34, 147, 184, 0.3);
+            --bg: #020306;
+            --card-bg: rgba(255, 255, 255, 0.02);
+            --border: rgba(255, 255, 255, 0.08);
+            --text-main: #ffffff;
+            --text-dim: #94a3b8;
+            --success: #00ff88;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; scroll-behavior: smooth; }
+        body { background: var(--bg); color: var(--text-main); font-family: 'Plus Jakarta Sans', sans-serif; line-height: 1.6; overflow-x: hidden; }
+
+        .blob { position: fixed; width: 500px; height: 500px; background: radial-gradient(circle, var(--primary-glow) 0%, transparent 70%); z-index: -1; filter: blur(40px); }
+        .blob-1 { top: -200px; right: -100px; }
+        .blob-2 { bottom: -200px; left: -100px; opacity: 0.5; }
+
+        header {
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 20px 8%; background: rgba(2, 3, 6, 0.8);
+            backdrop-filter: blur(20px); position: fixed; width: 100%; top: 0; z-index: 1000;
+            border-bottom: 1px solid var(--border);
+        }
+        .logo-container img { height: 40px; }
+
+        .container { max-width: 1300px; margin: 0 auto; padding: 0 5%; }
+
+        /* Hero Section */
+        .hero { padding: 180px 0 100px; display: grid; grid-template-columns: 1.2fr 0.8fr; gap: 60px; align-items: center; }
+        .hero-text h1 { font-size: clamp(2.8rem, 6vw, 4.2rem); font-weight: 800; line-height: 1.1; margin-bottom: 24px; letter-spacing: -2px; }
+        .hero-text h1 span { color: var(--primary); text-shadow: 0 0 30px var(--primary-glow); }
+        .hero-text p { font-size: 1.2rem; color: var(--text-dim); margin-bottom: 40px; max-width: 600px; }
+
+        .badge-row { display: flex; gap: 12px; margin-bottom: 30px; flex-wrap: wrap; }
+        .info-badge { background: var(--card-bg); border: 1px solid var(--border); padding: 8px 16px; border-radius: 100px; font-size: 0.75rem; font-weight: 600; display: flex; align-items: center; gap: 8px; color: var(--text-dim); }
+        .info-badge i { color: var(--primary); }
+
+        /* Offer Card */
+        .offer-card {
+            background: linear-gradient(165deg, rgba(255,255,255,0.05) 0%, rgba(255,255,255,0.01) 100%);
+            border: 1px solid var(--primary); border-radius: 32px; padding: 40px;
+            position: relative; box-shadow: 0 40px 80px rgba(0,0,0,0.5);
+        }
+        
+        .price-display { margin: 25px 0; border-top: 1px solid var(--border); padding-top: 25px; }
+        .price-val { font-size: 4.2rem; font-weight: 800; letter-spacing: -2px; display: flex; align-items: baseline; gap: 8px; }
+        .price-currency { font-size: 1.5rem; font-weight: 600; color: var(--text-main); }
+        .price-period { font-size: 1rem; color: var(--text-dim); font-weight: 500; }
+
+        .btn-buy {
+            display: block; width: 100%; background: var(--primary); color: white;
+            text-align: center; padding: 22px; border-radius: 16px; text-decoration: none;
+            font-weight: 800; font-size: 1.1rem; transition: 0.4s;
+            box-shadow: 0 10px 25px var(--primary-glow);
+        }
+        .btn-buy:hover { transform: translateY(-3px); filter: brightness(1.1); box-shadow: 0 15px 35px var(--primary-glow); }
+
+        .spec-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 30px; }
+        .spec-item { background: rgba(255,255,255,0.03); border: 1px solid var(--border); padding: 15px; border-radius: 15px; }
+        .spec-item label { display: block; font-size: 0.65rem; text-transform: uppercase; color: var(--text-dim); font-weight: 700; }
+        .spec-item span { font-size: 0.95rem; font-weight: 700; color: #fff; }
+
+        /* Painel Showcase com Efeito 3D */
+        .panel-showcase { padding: 100px 0; background: radial-gradient(circle at center, rgba(34, 147, 184, 0.05) 0%, transparent 70%); }
+        .panel-grid { display: grid; grid-template-columns: 0.8fr 1.2fr; gap: 60px; align-items: center; perspective: 1000px; }
+        
+        .panel-mockup {
+            background: #0f172a; border-radius: 20px; padding: 10px;
+            border: 1px solid var(--border); box-shadow: 0 50px 100px rgba(0,0,0,0.6);
+            position: relative; overflow: hidden;
+            transition: transform 0.1s ease-out;
+            transform-style: preserve-3d;
+            will-change: transform;
+        }
+        .panel-mockup img { width: 100%; border-radius: 12px; display: block; filter: brightness(0.9); pointer-events: none; transition: 0.5s; }
+        
+        /* Hardware Showcase */
+        .hardware-showcase { padding: 100px 0; border-top: 1px solid var(--border); }
+        .monitor-wrapper {
+            display: grid; grid-template-columns: 1fr 1fr; gap: 50px; align-items: center;
+            background: var(--card-bg); border: 1px solid var(--border); border-radius: 40px;
+            padding: 60px; backdrop-filter: blur(10px);
+        }
+        .cpu-visual { position: relative; display: flex; justify-content: center; }
+        .cpu-visual img {
+            width: 100%; max-width: 380px; filter: drop-shadow(0 0 30px var(--primary-glow));
+            animation: float 6s ease-in-out infinite; z-index: 2;
+        }
+        @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-15px); } }
+
+        .tech-grid-internal { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-top: 30px; }
+        .tech-box { background: rgba(255,255,255,0.03); padding: 20px; border-radius: 18px; border: 1px solid var(--border); }
+        .tech-box i { color: var(--primary); margin-bottom: 10px; font-size: 1.2rem; }
+
+        /* FAQ */
+        .faq { padding: 80px 0; background: rgba(255,255,255,0.01); }
+        .faq-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+        .faq-item { background: var(--card-bg); border: 1px solid var(--border); padding: 25px; border-radius: 16px; }
+
+        footer { padding: 60px 0; border-top: 1px solid var(--border); text-align: center; }
+
+        @media (max-width: 1024px) {
+            .hero, .panel-grid, .monitor-wrapper { grid-template-columns: 1fr; text-align: center; }
+            .hero-text p { margin: 0 auto 40px; }
+            .panel-mockup { order: -1; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="blob blob-1"></div>
+    <div class="blob blob-2"></div>
+
+    <header>
+        <div class="container" style="display: flex; justify-content: space-between; width: 100%; align-items: center;">
+            <div class="logo-container"><img src="Design sem nome (1).png" alt="Nevora Logo"></div>
+            <nav style="display: flex; gap: 25px;">
+                <a href="#tecnologia" style="color: var(--text-dim); text-decoration: none; font-size: 0.85rem; font-weight: 600;">Tecnologia</a>
+                <a href="#painel" style="color: var(--text-dim); text-decoration: none; font-size: 0.85rem; font-weight: 600;">Painel</a>
+                <a href="#faq" style="color: var(--text-dim); text-decoration: none; font-size: 0.85rem; font-weight: 600;">Dúvidas</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container">
+        
+        <section class="hero">
+            <div class="hero-text">
+                <div class="badge-row">
+                    <div class="info-badge"><i class="fas fa-microchip"></i> Intel Xeon® E5 v3</div>
+                    <div class="info-badge"><i class="fas fa-memory"></i> 128GB RAM ECC</div>
+                    <div class="info-badge" style="border-color: var(--success); color: var(--success);"><i class="fas fa-check"></i> Lote #1 Aberto</div>
+                </div>
+                <h1>Performance de Elite para a <span>Nevora Host.</span></h1>
+                <p>Nascemos para entregar o que as gigantes ignoram: hardware bruto, transparência total e o poder do Xeon® para o seu projeto.</p>
+                
+                <div style="background: rgba(34, 147, 184, 0.05); padding: 25px; border-radius: 24px; border: 1px solid var(--border);">
+                    <h4 style="font-size: 0.9rem; margin-bottom: 15px; color: var(--primary);">DADOS DO CLUSTER</h4>
+                    <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px;">
+                        <div><strong style="display: block; font-size: 1.3rem;">30MB</strong><small style="color: var(--text-dim);">Cache L3</small></div>
+                        <div><strong style="display: block; font-size: 1.3rem;">9.6 GT/s</strong><small style="color: var(--text-dim);">QPI Speed</small></div>
+                        <div><strong style="display: block; font-size: 1.3rem;">DDR4</strong><small style="color: var(--text-dim);">ECC Memory</small></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="offer-card">
+                <span style="font-size: 0.7rem; font-weight: 800; color: var(--primary); letter-spacing: 2px;">NEVORA XEON PRO</span>
+                <h2 style="margin: 10px 0 5px; font-size: 1.8rem;">Plano Start 4GB</h2>
+                <p style="font-size: 0.85rem; color: var(--text-dim);">O dobro de memória para projetos que exigem mais.</p>
+
+                <div class="price-display">
+                    <div class="price-val">
+                        <span class="price-currency">R$</span> 47,90
+                        <span class="price-period">/mês</span>
+                    </div>
+                    <span style="color: var(--success); font-size: 0.75rem; font-weight: 700;"><i class="fas fa-bolt"></i> PRONTO PARA O BOOT EM 60 DIAS</span>
+                </div>
+
+                <a href="https://discord.gg/78XEnzKB" class="btn-buy">GARANTIR MEU SLOT</a>
+
+                <div class="spec-grid">
+                    <div class="spec-item"><label>CPU</label><span>Intel Xeon 2670 v3</span></div>
+                    <div class="spec-item"><label>RAM</label><span>4GB DDR4 ECC</span></div>
+                    <div class="spec-item"><label>DISK</label><span>30GB NVMe M.2</span></div>
+                    <div class="spec-item"><label>UPLINK</label><span>10Gbps Shared</span></div>
+                </div>
+            </div>
+        </section>
+
+        <section class="panel-showcase" id="painel">
+            <div class="panel-grid">
+                <div class="panel-info">
+                    <span style="color: var(--primary); font-weight: 800; font-size: 0.7rem; letter-spacing: 2px; text-transform: uppercase;">Experiência de Usuário</span>
+                    <h2 style="font-size: 2.5rem; margin: 15px 0; line-height: 1.1;">Controle Total. <br><span style="color: var(--primary);">Interface Pterodactyl.</span></h2>
+                    <p style="color: var(--text-dim); margin-bottom: 25px;">Utilizamos o ecossistema <b>Pterodactyl</b> para garantir um painel robusto e rápido. Escolhemos essa base pela segurança e isolamento total via Docker, oferecendo a interface que os maiores desenvolvedores do mundo confiam.</p>
+                    
+                    <div class="tech-box" style="margin-bottom: 15px;">
+                        <h4 style="color: var(--primary);"><i class="fas fa-layer-group"></i> Gestão em Tempo Real</h4>
+                        <p style="font-size: 0.85rem;">Monitore CPU, RAM e Rede com gráficos precisos. O controle do seu servidor na palma da sua mão.</p>
+                    </div>
+                    <p style="font-size: 0.8rem; color: var(--text-dim); font-style: italic;">* O painel oficial da Nevora segue este padrão de excelência visual.</p>
+                </div>
+                
+                <div class="panel-mockup" id="tilt-card">
+                    <img src="painel.png" alt="Painel Pterodactyl Nevora">
+                    <div style="padding: 20px; text-align: center; background: rgba(0,0,0,0.4);">
+                        <span style="font-size: 0.8rem; color: var(--primary); font-weight: 700;">DASHBOARD PREVIEW</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="hardware-showcase" id="tecnologia">
+            <div class="monitor-wrapper">
+                <div class="cpu-visual">
+                    <img src="cpu.png" alt="Intel Xeon Processador">
+                </div>
+                <div class="monitor-info">
+                    <span style="color: var(--primary); font-weight: 800; font-size: 0.7rem; letter-spacing: 2px; text-transform: uppercase;">Tecnologia de Servidor</span>
+                    <h2 style="font-size: 2.5rem; margin-top: 10px; line-height: 1.1;">O Coração da Nevora.</h2>
+                    <p style="color: var(--text-dim); margin-top: 20px;">Não economizamos onde importa. O <b>Intel® Xeon® E5-2670 v3</b> entrega a estabilidade que o seu servidor precisa para escalar sem engasgos.</p>
+                    
+                    <div class="tech-grid-internal">
+                        <div class="tech-box">
+                            <i class="fas fa-microchip"></i>
+                            <h4>Arquitetura de Elite</h4>
+                            <p>12 Cores e 24 Threads prontos para lidar com qualquer carga de trabalho.</p>
+                        </div>
+                        <div class="tech-box">
+                            <i class="fas fa-memory"></i>
+                            <h4>Memória ECC</h4>
+                            <p>DDR4 com correção de erros para máxima estabilidade 24/7.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="faq" id="faq">
+            <div class="section-title" style="text-align: center; margin-bottom: 50px;"><h2>Perguntas Frequentes</h2></div>
+            <div class="faq-grid">
+                <div class="faq-item">
+                    <h4>Por que a Nevora Host está em pré-venda?</h4>
+                    <p>Estamos construindo nosso próprio cluster do zero para garantir o hardware prometido. O prazo de 60 dias assegura a montagem e testes rigorosos.</p>
+                </div>
+                <div class="faq-item">
+                    <h4>O painel será customizado?</h4>
+                    <p>Sim! Partimos da robustez do Pterodactyl e aplicaremos a identidade visual exclusiva da Nevora para uma experiência única.</p>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <footer>
+        <div class="container">
+            <img src="Design sem nome (2).png" alt="Nevora" style="height: 80px; margin-bottom: 15px; opacity: 0.8;">
+            <p style="color: var(--text-dim); font-size: 0.8rem;">Nevora Host &copy; 2026. Feito de Dev para Dev.</p>
+        </div>
+    </footer>
+
+    <script>
+        const card = document.getElementById('tilt-card');
+        const container = document.querySelector('.panel-grid');
+
+        container.addEventListener('mousemove', (e) => {
+            const rect = container.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+            
+            const centerX = rect.width / 2;
+            const centerY = rect.height / 2;
+            
+            const rotateX = (y - centerY) / 20;
+            const rotateY = (centerX - x) / 20;
+
+            card.style.transform = `rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
+        });
+
+        container.addEventListener('mouseenter', () => {
+            card.style.transition = 'none';
+        });
+
+        container.addEventListener('mouseleave', () => {
+            card.style.transition = 'all 0.5s ease';
+            card.style.transform = `rotateX(0deg) rotateY(0deg)`;
+        });
+    </script>
+
+</body>
+</html>
