@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="pt-br" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nevora — Elite Xeon® Infrastructure</title>
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    <script async src="https://js.stripe.com/v3/buy-button.js"></script>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --nevora-purple: #a855f7;
+            --nevora-dark: #000000;
+            --apple-gray: #1d1d1f;
+            --text-secondary: #86868b;
+            --glass: rgba(255, 255, 255, 0.03);
+            --neon-glow: 0 0 20px rgba(168, 85, 247, 0.4);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
+        body { background-color: var(--nevora-dark); color: #ffffff; overflow-x: hidden; -webkit-font-smoothing: antialiased; }
+
+        /* --- UI ELEMENTS --- */
+        .glass-nav { background: rgba(0, 0, 0, 0.85); backdrop-filter: saturate(180%) blur(20px); border-bottom: 1px solid rgba(255, 255, 255, 0.08); }
+        
+        .hero-title {
+            font-size: clamp(48px, 10vw, 110px); font-weight: 800; line-height: 1.02; letter-spacing: -0.04em;
+            background: linear-gradient(180deg, #fff 0%, rgba(255,255,255,0.6) 100%);
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+        }
+
+        .starter-monolith {
+            background: linear-gradient(145deg, rgba(15,15,15,0.9) 0%, rgba(5,5,5,1) 100%);
+            border: 1px solid rgba(168, 85, 247, 0.3); border-radius: 42px; padding: 60px;
+            box-shadow: 0 40px 100px rgba(0,0,0,0.8); position: relative; overflow: hidden;
+        }
+
+        .stripe-btn-container { min-height: 64px; border-radius: 980px; overflow: hidden; margin-top: 2rem; }
+
+        .tech-card { background: #161617; border-radius: 24px; padding: 32px; border: 1px solid rgba(255,255,255,0.05); transition: 0.4s; }
+        .tech-card:hover { border-color: var(--nevora-purple); background: #1c1c1e; }
+
+        .reveal { opacity: 0; transform: translateY(30px); transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1); }
+        .reveal.active { opacity: 1; transform: translateY(0); }
+
+        .code-block { font-family: 'Monaco', monospace; background: #0a0a0a; border-radius: 12px; padding: 20px; font-size: 13px; color: #a855f7; border: 1px solid #1a1a1a; line-height: 1.6; }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #000; }
+        ::-webkit-scrollbar-thumb { background: #333; border-radius: 10px; }
+        ::-webkit-scrollbar-thumb:hover { background: var(--nevora-purple); }
+    </style>
+</head>
+<body>
+
+    <nav class="fixed top-0 w-full z-[1000] glass-nav h-[52px] flex items-center">
+        <div class="max-w-6xl mx-auto px-6 w-full flex justify-between items-center">
+            <div class="flex items-center gap-2 cursor-pointer" onclick="window.scrollTo(0,0)">
+                <div class="w-6 h-6 bg-purple-600 rounded-md flex items-center justify-center">
+                    <div class="w-2 h-2 bg-white rounded-full"></div>
+                </div>
+                <span class="text-sm font-bold tracking-tight">Nevora Host</span>
+            </div>
+            <div class="flex gap-8 items-center text-[12px] text-zinc-400 font-medium">
+                <a href="#hardware" class="hover:text-white transition-colors">Infraestrutura</a>
+                <a href="#docs" class="hover:text-white transition-colors">API/Docs</a>
+                <a href="#termos" class="hover:text-white transition-colors">SLA</a>
+                <button onclick="toggleModal('login-modal')" class="bg-white text-black px-4 py-1.5 rounded-full font-bold">Terminal</button>
+            </div>
+        </div>
+    </nav>
+
+    <main>
+        <section class="min-h-screen flex flex-col items-center justify-center text-center px-6 pt-20">
+            <div class="reveal active">
+                <span class="text-purple-500 font-bold tracking-[0.3em] text-[10px] uppercase mb-6 block">Nevora Cluster Alpha 2026</span>
+                <h1 class="hero-title mb-8">Hardware Bruto. <br> Lucro no Caixa.</h1>
+                <p class="text-zinc-400 text-xl max-w-2xl mx-auto mb-12 font-medium">
+                    Starter Alpha: 1 vCore Xeon®, 1GB RAM ECC, NVMe Gen4. <br>
+                    Onde a performance encontra a eficiência financeira.
+                </p>
+                <div class="flex gap-6 justify-center">
+                    <a href="#checkout" class="bg-white text-black px-8 py-4 rounded-full font-bold text-lg hover:scale-105 transition-all">Ver Slot Alpha</a>
+                </div>
+            </div>
+        </section>
+
+        <section id="hardware" class="py-32 bg-zinc-950/50">
+            <div class="max-w-6xl mx-auto px-6">
+                <h2 class="text-5xl font-bold mb-20 reveal">Engenharia de <br><span class="text-zinc-500">Nível Industrial.</span></h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    <div class="tech-card reveal">
+                        <i data-lucide="cpu" class="text-purple-500 mb-6"></i>
+                        <h3 class="text-xl font-bold mb-4">Intel Xeon E5 v3</h3>
+                        <p class="text-zinc-500 text-sm leading-relaxed">Processamento multithread otimizado para containers Docker e painéis Pterodactyl. Latência reduzida em 40% em relação à geração v2.</p>
+                    </div>
+                    <div class="tech-card reveal">
+                        <i data-lucide="database" class="text-purple-500 mb-6"></i>
+                        <h3 class="text-xl font-bold mb-4">NVMe M.2 Gen 4</h3>
+                        <p class="text-zinc-500 text-sm leading-relaxed">Velocidade de leitura de até 7000MB/s. Seus bancos de dados MySQL e arquivos de jogo carregam instantaneamente.</p>
+                    </div>
+                    <div class="tech-card reveal">
+                        <i data-lucide="shield" class="text-purple-500 mb-6"></i>
+                        <h3 class="text-xl font-bold mb-4">DDoS Protection</h3>
+                        <p class="text-zinc-500 text-sm leading-relaxed">Mitigação L3/L4 integrada. Nossa rede identifica e descarta pacotes maliciosos antes de atingirem seu vCore.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="checkout" class="py-32 px-6">
+            <div class="max-w-4xl mx-auto">
+                <div class="starter-monolith reveal">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-16 items-center">
+                        <div>
+                            <span class="text-purple-500 font-bold text-[10px] uppercase tracking-widest">Oferta Única</span>
+                            <h2 class="text-6xl font-black mt-2 mb-6 italic italic tracking-tighter">Starter <br>Alpha.</h2>
+                            <ul class="space-y-4 mb-8">
+                                <li class="flex items-center gap-3 text-zinc-400 font-medium"><i data-lucide="check" class="text-green-500 w-5 h-5"></i> 1 vCore Xeon E5-2670 v3</li>
+                                <li class="flex items-center gap-3 text-zinc-400 font-medium"><i data-lucide="check" class="text-green-500 w-5 h-5"></i> 1GB RAM DDR4 ECC</li>
+                                <li class="flex items-center gap-3 text-zinc-400 font-medium"><i data-lucide="check" class="text-green-500 w-5 h-5"></i> 15GB NVMe Storage</li>
+                                <li class="flex items-center gap-3 text-zinc-400 font-medium"><i data-lucide="check" class="text-green-500 w-5 h-5"></i> Uplink 1Gbps Compartilhado</li>
+                            </ul>
+                            <div class="text-5xl font-black tracking-tighter">R$ 17,90 <span class="text-sm text-zinc-600">/mês</span></div>
+                        </div>
+                        
+                        <div class="text-center bg-white/5 p-8 rounded-[32px] border border-white/5">
+                            <p class="text-sm text-zinc-400 mb-6 font-medium">Finalize sua reserva via Stripe</p>
+                            
+                            <div class="stripe-btn-container">
+                                <stripe-buy-button
+                                  buy-button-id="https://buy.stripe.com/dRm28k3Ws8yB5ZBez124000"
+                                  publishable-key="pk_live_51T6PWc5BntQiLDzxsSWuenZ0TyUcgyJsKLIXfmwSLeSmQSTZWhiUmCRf4wWFtzUROpTadNR3ZnRG8KyS75Dyc66L00gYjgmOle"
+                                >
+                                </stripe-buy-button>
+                            </div>
+                            
+                            <p class="mt-8 text-[10px] text-zinc-600 font-bold uppercase tracking-widest">Ativação Lote Alpha: 60 Dias</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="docs" class="py-32 bg-zinc-950/30 border-t border-white/5">
+            <div class="max-w-6xl mx-auto px-6">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-20">
+                    <div class="reveal">
+                        <h2 class="text-4xl font-bold mb-8">Nevora API <br><span class="text-zinc-600 text-2xl font-medium">Automação de Infra</span></h2>
+                        <p class="text-zinc-500 mb-8 leading-relaxed">Nossa infraestrutura foi desenhada para ser controlada via código. Integre seu fluxo de CI/CD diretamente com nossos nós Xeon.</p>
+                        
+                        <div class="code-block">
+                            POST /v1/alpha/instance/reboot<br>
+                            Auth: Bearer NEVORA_ALPHA_TOKEN<br><br>
+                            {<br>
+                            &nbsp;&nbsp;"node_id": "alpha-01",<br>
+                            &nbsp;&nbsp;"force": true,<br>
+                            &nbsp;&nbsp;"priority": "high"<br>
+                            }
+                        </div>
+                    </div>
+                    
+                    <div class="reveal">
+                        <h2 class="text-4xl font-bold mb-8">SLA & Garantia <br><span class="text-zinc-600 text-2xl font-medium">Compromisso Nevora</span></h2>
+                        <div class="space-y-6 text-zinc-500 text-sm">
+                            <p><b>1. Uptime:</b> Garantimos 99.9% de disponibilidade no Cluster Alpha. Falhas de hardware Xeon são mitigadas por substituição imediata de nó.</p>
+                            <p><b>2. Rede:</b> Nossa latência média em São Paulo é de 4ms. O tráfego é filtrado por firewalls de hardware dedicados.</p>
+                            <p><b>3. Reembolso:</b> Caso o Lote Alpha não seja entregue no prazo estipulado de 60 dias, o estorno via Stripe é automático.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="termos" class="py-32 px-6 border-t border-white/5 text-zinc-600 text-[11px] leading-relaxed">
+            <div class="max-w-4xl mx-auto">
+                <h4 class="font-bold text-zinc-400 mb-4 uppercase tracking-widest">Diretrizes de Uso do Lote Alpha</h4>
+                <p class="mb-4">O uso da infraestrutura Nevora Host implica na aceitação total dos termos aqui listados. Como um projeto focado em eficiência ("Lucro é Caixa"), não permitimos atividades que comprometam a integridade dos processadores Intel Xeon compartilhados.</p>
+                <p class="mb-4">Proibido: Mineração de criptomoedas, ataques de negação de serviço (DDoS) originados de nossos nós, e armazenamento de conteúdo ilícito. O descumprimento resulta em suspensão imediata sem reembolso.</p>
+                <p>O monitoramento de recursos (CPU/RAM) é constante para evitar "Noisy Neighbors". Garantimos que cada vCore entregue exatamente a performance contratada.</p>
+            </div>
+        </section>
+    </main>
+
+    <div id="login-modal" class="fixed inset-0 bg-black/90 backdrop-blur-xl z-[2000] hidden flex items-center justify-center p-6">
+        <div class="w-full max-w-md bg-zinc-900 border border-white/10 rounded-[42px] p-12 relative">
+            <button onclick="toggleModal('login-modal')" class="absolute top-8 right-8 text-zinc-500 hover:text-white"><i data-lucide="x"></i></button>
+            <h2 class="text-3xl font-bold mb-8 italic tracking-tight">Login_Alpha</h2>
+            <div class="space-y-4">
+                <button onclick="alert('Discord OAuth...')" class="w-full bg-[#5865f2] py-4 rounded-2xl font-bold flex items-center justify-center gap-3"><i data-lucide="message-square"></i> Discord</button>
+                <input type="email" placeholder="Email de Operador" class="w-full bg-black border border-white/10 p-5 rounded-2xl text-white outline-none focus:border-purple-600">
+                <button class="w-full bg-white text-black py-5 rounded-2xl font-bold">Solicitar Acesso</button>
+            </div>
+        </div>
+    </div>
+
+    <footer class="py-20 border-t border-white/5">
+        <div class="max-w-6xl mx-auto px-6 text-center">
+            <div class="flex items-center justify-center gap-2 mb-8">
+                <div class="w-4 h-4 bg-purple-600 rounded-sm"></div>
+                <span class="text-sm font-bold tracking-tighter">Nevora Host</span>
+            </div>
+            <p class="text-[10px] text-zinc-700 font-black uppercase tracking-[0.5em]">Todo lucro que entrar é caixa sem gastos. © 2026.</p>
+        </div>
+    </footer>
+
+    <script>
+        // Init Icons
+        lucide.createIcons();
+
+        // Reveal Animations
+        gsap.registerPlugin(ScrollTrigger);
+        document.querySelectorAll('.reveal').forEach(el => {
+            ScrollTrigger.create({
+                trigger: el, start: "top 90%",
+                onEnter: () => el.classList.add('active')
+            });
+        });
+
+        function toggleModal(id) {
+            const modal = document.getElementById(id);
+            modal.classList.toggle('hidden');
+            document.body.style.overflow = modal.classList.contains('hidden') ? 'auto' : 'hidden';
+        }
+
+        // Mouse Parallax for backgrounds
+        document.addEventListener('mousemove', (e) => {
+            const moveX = (e.clientX - window.innerWidth / 2) * 0.01;
+            const moveY = (e.clientY - window.innerHeight / 2) * 0.01;
+            gsap.to('.starter-monolith', { x: moveX, y: moveY, duration: 1, ease: "power2.out" });
+        });
+    </script>
+</body>
+</html>
